@@ -10,33 +10,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
+        title: Text('Home Page'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            ElevatedButton(
-              child: Text('Login'),
-              onPressed: () {
-                final viewModel =
-                Provider.of<UserViewModel>(context, listen: false);
-                viewModel.login(_usernameController.text,
-                    _passwordController.text, context);
-              },
-            ),
-          ],
-        ),
-      ),
+      body: Container(
+          child: Column(
+        children: [],
+      )),
     );
   }
 }
