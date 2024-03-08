@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:noviindus_task/view/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/user_model.dart';
-import '../../repository/login_api.dart';
+import '../../repository/api_services.dart';
 
 class UserViewModel extends ChangeNotifier {
   late UserModel _user;
@@ -18,8 +18,6 @@ class UserViewModel extends ChangeNotifier {
       String username, String password, BuildContext context) async {
     try {
       _user = await _apiService.loginUser(username, password);
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', _user.token);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful!')),
       );

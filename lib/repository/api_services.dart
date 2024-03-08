@@ -20,8 +20,12 @@ class ApiService extends ClassRepository {
     );
 
     if (response.statusCode == 200) {
+      UserModel user = UserModel.fromJson(jsonDecode(response.body));
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+          'token', user.token);
       print("ok done");
-      return UserModel.fromJson(jsonDecode(response.body));
+      return user;
     } else {
       throw Exception('Failed to login.');
     }
@@ -31,6 +35,7 @@ class ApiService extends ClassRepository {
   Future<List<PatientListModel>> getPatients() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+    print("token : ${token.toString()}");
 
     if (token == null) {
       throw Exception('No token found.');
@@ -40,15 +45,16 @@ class ApiService extends ClassRepository {
       Uri.parse('https://flutter-amr.noviindus.in/api/PatientList'),
       headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Bearer $token', // Use the token here
+        'Authorization': 'Bearer ${token.toString()}',
       },
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> body = jsonDecode(response.body);
-      return body
+      List<dynamic> patientListJson = jsonDecode(response.body);
+      final List<PatientListModel> patientList = patientListJson
           .map((dynamic item) => PatientListModel.fromJson(item))
           .toList();
+      return patientList;
     } else {
       throw Exception('Failed to load patients.');
     }
